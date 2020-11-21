@@ -22,6 +22,9 @@ export class DockerApiInstances {
     for (const k of _.keys(this.instances)) {
       instances[k] = await this.instances[k].info();
     }
+    if (_.isEmpty(instances)) {
+      return null;
+    }
     return instances;
   }
 

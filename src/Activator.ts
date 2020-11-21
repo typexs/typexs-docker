@@ -6,7 +6,7 @@ import {DockerApiInstances} from './lib/DockerApiInstances';
 export class Activator implements IActivator, IPermissions {
 
   async startup() {
-    const docker = new DockerApiInstances();
+    const docker = Injector.get(DockerApiInstances);
     await docker.prepare();
     Injector.set(DockerApiInstances.NAME, docker);
   }

@@ -7,30 +7,28 @@ import {
 } from '../lib/Constants';
 import {Get, JsonController, QueryParam} from 'routing-controllers';
 import {Inject} from '@typexs/base';
-import {DockerApiInstances} from '../lib/DockerApiInstances';
+import {DockerExchange} from '../adapters/exchange/docker/DockerExchange';
 
 @ContextGroup(C_API)
 @JsonController(API_CTRL_DOCKER_API)
 export class DockerApiController {
 
-  @Inject(DockerApiInstances.NAME)
-  dockers: DockerApiInstances;
+  @Inject(() => DockerExchange)
+  exchange: DockerExchange;
 
   @Get(_API_CTRL_DOCKER_API_INSTANCES)
-  getInstances() {
-    return this.dockers.getInstances();
+  getInstances(@QueryParam('options') opts: any = {}) {
+    return this.exchange.getInstances(opts);
   }
 
   @Get(_API_CTRL_DOCKER_LIST_IMAGES)
-  async getImages(@QueryParam('instance') instance: string = C_DEFAULT) {
-    instance = instance.replace(/\"|\'/g, '').trim();
-    return this.dockers.getInstance(instance).listImages();
+  async getImages(@QueryParam('instance') instance: string = C_DEFAULT, @QueryParam('options') opts: any = {}) {
+    return this.exchange.getImages(instance, opts);
   }
 
   @Get(_API_CTRL_DOCKER_LIST_CONTAINERS)
-  getContainers(@QueryParam('instance') instance: string = C_DEFAULT) {
-    instance = instance.replace(/\"|\'/g, '').trim();
-    return this.dockers.getInstance(instance).listContainers();
+  getContainers(@QueryParam('instance') instance: string = C_DEFAULT, @QueryParam('options') opts: any = {}) {
+    return this.exchange.getContainers(instance, opts);
   }
 
 }
