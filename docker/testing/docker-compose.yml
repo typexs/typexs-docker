@@ -5,13 +5,9 @@ networks:
 
 services:
 
-  txs_docker_postgres:
-    image: postgres:11
-    environment:
-      POSTGRES_DATABASES: docker
-      POSTGRES_USER: docker
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_PASSWORD:
-    command: postgres -c 'shared_buffers=256MB' -c 'max_connections=200'
+  txs_docker_redis:
+    image: redis:5
+    ports:
+    - 127.0.0.1:6379:6379
     networks:
       - txs_docker
