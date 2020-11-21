@@ -1,0 +1,33 @@
+
+app:
+  name: typexs-docker
+
+logging:
+  enable: true
+  level: debug
+  transports:
+  - console: {}
+
+
+server:
+  default:
+    type: web
+    framework: express
+    host: localhost
+    port: 4500
+
+    routes:
+    - type: routing_controller
+      context: api
+      routePrefix: api
+
+
+storage:
+  default:
+    type: sqlite
+    database: ':memory:'
+    synchronize: true
+
+docker:
+  default:
+    socketPath: /var/run/docker.sock

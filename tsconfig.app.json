@@ -1,0 +1,35 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "build/app",
+    "target": "es5",
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "core-js/es7/reflect": [
+        "node_modules/core-js/proposals/reflect-metadata"
+      ],
+      "react-native-sqlite-storage": [
+        "src/dummy.ts"
+      ]
+    }
+  },
+  "include": [
+    "src/dummy.ts",
+    "src/app/**/*.ts",
+    "src/modules/**/*.ts"
+  ],
+  "exclude": [
+    "src/app/test.ts",
+    "src/modules/**/api/*.ts",
+    "src/modules/**/*.spec.ts",
+    "src/app/**/*.spec.ts"
+  ],
+  "angularCompilerOptions": {
+    "genDir": "build/app-aot",
+    "skipMetadataEmit": false,
+    "skipTemplateCodegen": false
+    //"aot":false
+  }
+}

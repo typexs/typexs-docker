@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "importHelpers": true,
+    "lib": [
+      "dom",
+      "es5",
+      "es6"
+    ],
+    "outDir": "./build/compiled",
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "rootDir": ".",
+    "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "preserveConstEnums": true,
+    "pretty": true,
+    "declaration": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "stripInternal": true,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
+    "baseUrl": "./"
+  },
+  "exclude": [
+    "archive",
+    "build",
+    "dist",
+    "tmp",
+    "src/**/files",
+    "node_modules"
+  ],
+  "compileOnSave": true
+}
