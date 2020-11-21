@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {suite, test} from '@testdeck/mocha';
 import {Config} from 'commons-config';
 import {TestHelper} from './TestHelper';
@@ -7,13 +8,13 @@ import {DockerExchange} from '../../src/adapters/exchange/docker/DockerExchange'
 import {TEST_STORAGE_OPTIONS} from './config';
 import {expect} from 'chai';
 
-const LOG_EVENT = TestHelper.logEnable(true);
+const LOG_EVENT = TestHelper.logEnable(false);
 
 let bootstrap: Bootstrap;
 // tslint:disable-next-line:prefer-const
 let spawned: SpawnHandle;
 
-@suite('functional/exchange')
+@suite('functional/exchange-without-worker')
 class MessagingSpec {
 
 
@@ -40,6 +41,11 @@ class MessagingSpec {
           ],
           disableCache: true
         },
+        docker: {
+          default: {
+            socketPath: '/var/run/docker.sock'
+          }
+        }
 
       });
     await bootstrap.activateLogger();
@@ -66,11 +72,26 @@ class MessagingSpec {
   }
 
   @test
-  async 'docker message exchange'() {
+  async 'get instances'() {
     const exchange = Injector.get(DockerExchange);
     const results = await exchange.getInstances();
-    expect(results).to.be.deep.eq([{}]);
+    expect(_.keys(results)).to.have.length(1);
+    expect(_.concat([], ...results.map(x => _.keys(x).filter(y => !/^__/.test(y))))).to.be.deep.eq(['default']);
 
+  }
+
+  @test
+  async 'get images'() {
+    const exchange = Injector.get(DockerExchange);
+    const results = await exchange.getImages();
+    expect(results).to.have.length.gte(1);
+  }
+
+  @test
+  async 'get containers'() {
+    const exchange = Injector.get(DockerExchange);
+    const results = await exchange.getContainers();
+    expect(results).to.have.length.gte(1);
   }
 
 }

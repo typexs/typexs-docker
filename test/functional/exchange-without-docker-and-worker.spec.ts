@@ -6,14 +6,15 @@ import {SpawnHandle} from './SpawnHandle';
 import {DockerExchange} from '../../src/adapters/exchange/docker/DockerExchange';
 import {TEST_STORAGE_OPTIONS} from './config';
 import {expect} from 'chai';
+import * as _ from 'lodash';
 
-const LOG_EVENT = TestHelper.logEnable(true);
+const LOG_EVENT = TestHelper.logEnable(false);
 
 let bootstrap: Bootstrap;
 // tslint:disable-next-line:prefer-const
 let spawned: SpawnHandle;
 
-@suite('functional/exchange')
+@suite('functional/exchange-without-docker-and-worker')
 class MessagingSpec {
 
 
@@ -68,8 +69,10 @@ class MessagingSpec {
   @test
   async 'docker message exchange'() {
     const exchange = Injector.get(DockerExchange);
-    const results = await exchange.getInstances();
-    expect(results).to.be.deep.eq([{}]);
+    const results = await exchange.getInstances({filterErrors: true});
+    console.log(results);
+    expect(results).to.have.length(0);
+    expect(results.map(x => _.keys(x))).to.be.deep.eq([]);
 
   }
 
